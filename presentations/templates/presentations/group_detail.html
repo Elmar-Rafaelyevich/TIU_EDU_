@@ -1,0 +1,71 @@
+{% extends 'presentations/base.html' %}
+
+{% block title %}{{ group.name }}{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <a href="{% url 'dashboard' %}" style="color: #666; text-decoration: none;">← Назад</a>
+            <h1 style="margin-top: 0.5rem;">{{ group.name }}</h1>
+            {% if group.description %}
+            <p style="color: #666;">{{ group.description }}</p>
+            {% endif %}
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="{% url 'group_edit' group.id %}" class="btn btn-secondary">Редактировать группу</a>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 2rem;">
+    <h2 style="margin-bottom: 1.5rem;">Загрузить презентацию</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label">Название:</label>
+            {{ form.title }}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Файл:</label>
+            {{ form.file }}
+            <small style="color: #999;">Поддерживаются: PDF, PPT, DOC, JPG, PNG</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Загрузить</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem;">Презентации ({{ presentations.count }})</h2>
+    
+    {% if presentations %}
+    <ul class="file-list">
+        {% for pres in presentations %}
+        <li class="file-item">
+            <div style="flex: 1;">
+                <a href="{{ pres.file.url }}" target="_blank" class="file-link">
+                    <strong>{{ pres.title }}</strong>
+                </a>
+                <br>
+                <small style="color: #999;">
+                    {{ pres.filename }} • {{ pres.uploaded_at|date:"d.m.Y H:i" }}
+                </small>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="{{ pres.file.url }}" download class="btn btn-primary" style="padding: 0.5rem 1rem;">📥</a>
+                <a href="{% url 'presentation_delete' pres.id %}" class="btn btn-danger" style="padding: 0.5rem 1rem;">✕</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color: #999; text-align: center; padding: 2rem;">
+        В этой группе пока нет презентаций
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

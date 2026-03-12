@@ -1,0 +1,36 @@
+{% extends 'presentations/base.html' %}
+
+{% block title %}Мои группы{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <h1>Мои группы</h1>
+    <a href="{% url 'group_create' %}" class="btn btn-primary">+ Создать группу</a>
+</div>
+
+{% if groups %}
+<div class="grid">
+    {% for group in groups %}
+    <div class="card">
+        <h3 style="margin-bottom: 0.5rem;">{{ group.name }}</h3>
+        {% if group.description %}
+        <p style="color: #666; margin-bottom: 1rem;">{{ group.description|truncatechars:100 }}</p>
+        {% endif %}
+        <p style="color: #999; font-size: 0.9rem; margin-bottom: 1rem;">
+            Презентаций: {{ group.presentations.count }}
+        </p>
+        <div class="group-actions">
+            <a href="{% url 'group_detail' group.id %}" class="btn btn-primary" style="flex: 1;">Открыть</a>
+            <a href="{% url 'group_edit' group.id %}" class="btn btn-secondary">✎</a>
+            <a href="{% url 'group_delete' group.id %}" class="btn btn-danger">✕</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state card">
+    <p style="font-size: 1.2rem; margin-bottom: 1rem;">У вас пока нет групп</p>
+    <a href="{% url 'group_create' %}" class="btn btn-primary">Создать первую группу</a>
+</div>
+{% endif %}
+{% endblock %}

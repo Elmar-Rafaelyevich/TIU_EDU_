@@ -1,0 +1,35 @@
+{% extends 'presentations/base.html' %}
+
+{% block title %}Подтверждение удаления{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <div class="card" style="text-align: center;">
+        {% if type == 'group' %}
+        <h1 style="margin-bottom: 1rem;">Удалить группу?</h1>
+        <p style="margin-bottom: 2rem;">
+            Вы уверены, что хотите удалить группу <strong>"{{ group.name }}"</strong>?<br>
+            <span style="color: #f44336;">Все презентации в этой группе также будут удалены!</span>
+        </p>
+
+        <form method="post" style="display: flex; gap: 1rem; justify-content: center;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a href="{% url 'group_detail' group.id %}" class="btn btn-secondary">Отмена</a>
+        </form>
+
+        {% else %}
+        <h1 style="margin-bottom: 1rem;">Удалить презентацию?</h1>
+        <p style="margin-bottom: 2rem;">
+            Вы уверены, что хотите удалить презентацию <strong>"{{ object.title }}"</strong>?
+        </p>
+
+        <form method="post" style="display: flex; gap: 1rem; justify-content: center;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Отмена</a>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

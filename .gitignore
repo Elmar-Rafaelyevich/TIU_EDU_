@@ -1,0 +1,36 @@
+# Виртуальное окружение
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# База данных
+*.sqlite3
+db.sqlite3
+*.db
+
+# Медиа и статика
+media/
+staticfiles/
+static/
+
+# Конфиденциальные данные
+.env
+*.env
+secrets.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Логи
+*.log
+logs/
